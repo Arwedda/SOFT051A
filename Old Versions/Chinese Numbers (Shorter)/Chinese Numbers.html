@@ -1,0 +1,96 @@
+﻿<html>
+    <head>
+        <title>Chinese Numbers</title>
+        <meta http-equiv="x-ua-compatible" content="IE=10" />
+    </head>
+    <body style="background-color:lightskyblue">
+        <center><div style="background-color:lightgoldenrodyellow; width:300; border-width:2; border-style:ridge; border-color:blue">
+        <font size="+3"; style="font-family: Arial"><b>Chinese Numbers</b></font></><br /><br />
+        <input id ="btnPlay" type="button" value="PLAY" /><br /><br />
+        <input id="btn1" type="button" value="1" disabled="true" onclick="Choice = 1; Common()" />
+        <input id="btn2" type="button" value="2" disabled="true" onclick="Choice = 2; Common()" />
+        <input id="btn3" type="button" value="3" disabled="true" onclick="Choice = 3; Common()" />
+        <input id="btn4" type="button" value="4" disabled="true" onclick="Choice = 4; Common()" />
+        <input id="btn5" type="button" value="5" disabled="true" onclick="Choice = 5; Common()" /><br /><br />
+        <input id="btn6" type="button" value="6" disabled="true" onclick="Choice = 6; Common()" />
+        <input id="btn7" type="button" value="7" disabled="true" onclick="Choice = 7; Common()" />
+        <input id="btn8" type="button" value="8" disabled="true" onclick="Choice = 8; Common()" />
+        <input id="btn9" type="button" value="9" disabled="true" onclick="Choice = 9; Common()" />
+        <input id="btn10" type="button" value="10" disabled="true" onclick="Choice = 10; Common()" />
+        <p id="parFdbk" style="font-size: 30px; font-family: Arial; width:275px" >&nbsp;</p>
+        <img id="img1" src="StarOff.gif" />
+        <img id="img2" src="StarOff.gif" />
+        <img id="img3" src="StarOff.gif" />
+        <img id="img4" src="StarOff.gif" />
+        <img id="img5" src="StarOff.gif" /></div></center>
+        <bgsound id="sndPlayer"></bgsound>
+    </body>
+</html>
+
+<script language="vbscript">
+    Option Explicit
+    Dim Number
+    Dim Choice
+    Dim PrevNum
+    Dim Score
+    Dim Buttons
+
+        Sub window_onLoad()
+            Randomize
+            Number = 0
+            PrevNum = 0
+            Score = 0
+        End Sub
+
+    Sub btnPlay_onClick()
+        Do Until Number <> PrevNum 'Provides a random number that isn't the same as in the previous attempt
+            Number = Int(Rnd() * 10) + 1 
+        Loop
+
+        Reset()
+        sndPlayer.src = "ChineseNumber" & Number & ".wav" 'Play the sound file of the randomly generated number
+
+        For Buttons = 1 to 10 'Enables the buttons
+            document.getElementById("btn" & Buttons).disabled = False
+        Next
+    End Sub
+
+    Sub Reset()'Clears feedback paragraph and button colours
+        parFdbk.innerText = " "
+        parFdbk.style.backgroundColor = ""
+
+        For Buttons = 1 to 10 'Alter this to only reset changed buttons? In large program would be more efficient even if more lines in this
+            document.getElementById("btn" & Buttons).style.backgroundColor = ""
+        Next
+    End Sub
+
+    Sub Common()
+        PrevNum = Number
+        sndPlayer.src = "ChineseNumber" & Choice & ".wav" 'Play the sound file of the number the user pressed
+
+        If Number = Choice Then 'Update score and let user know they were right
+            parFdbk.innerText = "Correct!"
+            parFdbk.style.backgroundColor = "Yellow"
+            Score = Score + 1
+            document.getElementById("btn" & Choice).style.backgroundColor = "Lime"
+            document.getElementById("img" & Score).src = "StarOn.gif"
+            If Score = 5 Then 'Tell user they have won and reset the game
+                alert("Congratulations! You have won.")
+                    For Score = 1 to 5
+                        document.getElementById("img" & Score).src = "StarOff.gif"
+                    Next
+                Score = 0
+                Reset()
+            End If
+        Else 'Show the user the correct answer
+            parFdbk.innerText = "Sorry, it was " & Number
+            parFdbk.style.backgroundColor = "Red"
+            document.getElementById("btn" & Number).style.backgroundColor = "Lime"
+            document.getElementById("btn" & Choice).style.backgroundColor = "Red"
+        End If
+
+        For Buttons = 1 to 10 'Disables the buttons again
+            document.getElementById("btn" & Buttons).disabled = True
+        Next
+    End Sub
+</script>

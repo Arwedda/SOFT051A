@@ -1,0 +1,160 @@
+﻿<html>
+    <head>
+        <title>Chinese Numbers</title>
+        <meta http-equiv="x-ua-compatible" content="IE=10" />
+    </head>
+    <body style="background-color:lightskyblue">
+        <center><div style="background-color:lightgoldenrodyellow; width:300; border-width:2; border-style:ridge; border-color:blue">
+        <font size="+3"; style="font-family: Arial"><b>Chinese Numbers</b></font></><br /><br />
+        <input id ="btnPlay" type="button" value="PLAY" /><br /><br />
+        <input id="btn1" type="button" value="1" disabled="true" />
+        <input id="btn2" type="button" value="2" disabled="true" />
+        <input id="btn3" type="button" value="3" disabled="true" />
+        <input id="btn4" type="button" value="4" disabled="true" />
+        <input id="btn5" type="button" value="5" disabled="true" /><br /><br />
+        <input id="btn6" type="button" value="6" disabled="true" />
+        <input id="btn7" type="button" value="7" disabled="true" />
+        <input id="btn8" type="button" value="8" disabled="true" />
+        <input id="btn9" type="button" value="9" disabled="true" />
+        <input id="btn10" type="button" value="10" disabled="true" />
+        <p id="parFdbk" style="font-size: 30px; font-family: Arial; width:275px" >&nbsp;</p>
+        <img id="img1" src="StarOff.gif" />
+        <img id="img2" src="StarOff.gif" />
+        <img id="img3" src="StarOff.gif" />
+        <img id="img4" src="StarOff.gif" />
+        <img id="img5" src="StarOff.gif" /></div></center>
+        <bgsound id="sndPlayer"></bgsound>
+    </body>
+</html>
+
+<script language="vbscript">
+Option Explicit
+Dim Number
+Dim Choice
+Dim PrevNum
+Dim Score
+Dim Buttons
+
+    Sub window_onLoad()
+        Randomize
+        Number = 0
+        PrevNum = 0
+        Score = 0
+    End Sub
+
+    Sub btnPlay_onClick()
+        Do Until Number <> PrevNum 'Provides a random number that isn't the same as in the previous attempt
+            Number = Int(Rnd() * 10) + 1 
+        Loop
+
+        ClearFeedback()
+        sndPlayer.src = "ChineseNumber" & Number & ".wav" 'Play the sound file of the randomly generated number
+        EnableButtons
+    End Sub
+
+    Sub ClearFeedback()
+        parFdbk.innerText = " "
+        parFdbk.style.backgroundColor = ""
+
+        For Buttons = 1 to 10
+            document.getElementById("btn" & Buttons).style.backgroundColor = ""
+        Next
+    End Sub
+
+    Sub EnableButtons()
+        For Buttons = 1 to 10
+            document.getElementById("btn" & Buttons).disabled = False
+        Next
+    End Sub
+
+    Sub DisableButtons()
+        For Buttons = 1 to 10
+            document.getElementById("btn" & Buttons).disabled = True
+        Next
+    End Sub
+
+    Sub CorrectAnswer()
+        parFdbk.innerText = "Correct!"
+        parFdbk.style.backgroundColor = "Yellow"
+        Score = Score + 1
+        document.getElementById("btn" & Choice).style.backgroundColor = "Lime"
+        document.getElementById("img" & Score).src = "StarOn.gif"
+    End Sub
+
+    Sub IncorrectAnswer()
+        parFdbk.innerText = "Sorry, it was " & Number
+        parFdbk.style.backgroundColor = "Red"
+        document.getElementById("btn" & Number).style.backgroundColor = "Lime"
+        document.getElementById("btn" & Choice).style.backgroundColor = "Red"
+    End Sub
+
+    Sub Common()
+        PrevNum = Number
+        sndPlayer.src = "ChineseNumber" & Choice & ".wav" 'Play the sound file of the number the user pressed
+        DisableButtons
+
+        If Number = Choice Then
+            CorrectAnswer
+            If Score = 5 Then 'Tell user they have won and resets the game
+                alert("Congratulations! You have won.")
+                    For Score = 1 to 5
+                        document.getElementById("img" & Score).src = "StarOff.gif"
+                    Next
+                Score = 0
+                ClearFeedback
+            End If
+        Else
+            IncorrectAnswer
+        End If
+    End Sub
+
+    Sub btn1_onClick()
+        Choice = 1
+        Common
+    End Sub
+
+    Sub btn2_onclick()
+        Choice = 2
+        Common
+    End Sub
+
+    Sub btn3_onclick()
+        Choice = 3
+        Common
+    End Sub
+
+    Sub btn4_onclick()
+        Choice = 4
+        Common
+    End Sub
+
+    Sub btn5_onclick()
+        Choice = 5
+        Common
+    End Sub
+
+    Sub btn6_onclick()
+        Choice = 6
+        Common
+    End Sub
+
+    Sub btn7_onclick()
+        Choice = 7
+        Common
+    End Sub
+
+    Sub btn8_onclick()
+        Choice = 8
+        Common
+    End Sub
+
+    Sub btn9_onclick()
+        Choice = 9
+        Common
+    End Sub
+
+    Sub btn10_onclick()
+        Choice = 10
+        Common
+    End Sub
+</script>
